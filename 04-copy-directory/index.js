@@ -9,11 +9,11 @@ async function copyDirectoryFiles(pathToFilesFolder, pathToCopyFolder) {
     await rm(pathToCopyFolder, { recursive: true, force: true });
     await mkdir(pathToCopyFolder, {recursive: true});
     const folderFiles = await readdir(pathToFilesFolder, {withFileTypes: true});
-    for (let i = 0; i < folderFiles.length; i++) {
-      if (folderFiles[i].isDirectory()) {
-        copyDirectoryFiles(path.join(pathToFilesFolder, folderFiles[i].name), path.join(pathToCopyFolder, folderFiles[i].name));
+    for (let file of folderFiles) {
+      if (file.isDirectory()) {
+        copyDirectoryFiles(path.join(pathToFilesFolder, file.name), path.join(pathToCopyFolder, file.name));
       } else {
-        await copyFile(path.join(pathToFilesFolder, folderFiles[i].name), path.join(pathToCopyFolder, folderFiles[i].name));
+        await copyFile(path.join(pathToFilesFolder, file.name), path.join(pathToCopyFolder, file.name));
       }
     }
   } catch (err) {

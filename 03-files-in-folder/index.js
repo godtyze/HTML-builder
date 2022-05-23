@@ -14,7 +14,7 @@ async function logFilesInfo(pathToFolder) {
             console.log(err.message);
           } else {
             const pathToFile = path.join(pathToFolder, file.name);
-            console.log(`${path.parse(pathToFile).name} - ${path.extname(pathToFile).slice(1)} - ${stat.size / 1000}Kb`);
+            console.log(`${path.parse(pathToFile).name} - ${path.extname(pathToFile).slice(1)} - ${stat.size / 1024}Kb`);
           }
         });
       }

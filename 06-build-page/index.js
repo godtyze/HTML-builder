@@ -52,13 +52,11 @@ async function copyDirectoryFiles(pathToFilesFolder, pathToCopyFolder) {
 async function mergeStyles(pathToStylesFolder, pathToProjectDist) {
   try {
     const stylesFolder = await readdir(pathToStylesFolder, {withFileTypes: true});
-    const output = fs.createWriteStream(path.join(pathToProjectDist, 'style.css'));
-    const data = [];
-    for await (let style of stylesFolder) {
+    const output = fs.createWriteStream(path.join(pathToProjectDist, 'bundle.css'));
+    for (let style of stylesFolder) {
       if (style.isFile() && path.extname(path.join(pathToStylesFolder, style.name)) === '.css') {
         const input = fs.createReadStream(path.join(pathToStylesFolder, style.name), 'utf-8');
-        input.on('data', chunk => data.push(chunk));
-        input.on('end', () => output.write(data.join('\n\n')));
+        input.pipe(output);
       }
     }
   } catch (err) {

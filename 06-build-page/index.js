@@ -55,7 +55,7 @@ async function mergeStyles(pathToStylesFolder, pathToProjectDist) {
     const output = fs.createWriteStream(path.join(pathToProjectDist, 'style.css'));
     const data = [];
     for await (let style of stylesFolder) {
-      if (style.isFile() && style.name.includes('.css')) {
+      if (style.isFile() && path.extname(path.join(pathToStylesFolder, style.name)) === '.css') {
         const input = fs.createReadStream(path.join(pathToStylesFolder, style.name), 'utf-8');
         input.on('data', chunk => data.push(chunk));
         input.on('end', () => output.write(data.join('\n\n')));
